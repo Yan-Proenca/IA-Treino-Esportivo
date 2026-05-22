@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
   title: API de Cronograma e Rotina de Treinos
   description: API para geração automatizada de cronogramas de treino personalizados (musculação, esportes e lutas) utilizando inteligência artificial estruturada.
