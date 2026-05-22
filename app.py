@@ -6,13 +6,16 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 from config import CRONOGRAMA_TREINO_SCHEMA, SYSTEM_INSTRUCTION
+from flasgger import Swagger
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
+swagger = Swagger(app, template_file='openapi.yaml')
+
 
 def generate_workout_plan(perfil_usuario):
     modalidades_str = ", ".join(perfil_usuario.get("modalidades", []))
