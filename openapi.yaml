@@ -4,8 +4,8 @@ info:
   description: API para geração automatizada de cronogramas de treino personalizados (musculação, esportes e lutas) utilizando inteligência artificial estruturada.
   version: 1.0.0
 servers:
-  - url: https://ia-treino-esportivo.vercel.app/
-    description: Servidor de Produção
+  - url: https://ia-treino-esportivo.vercel.app
+    description: Servidor de produção
 paths:
   /:
     get:
