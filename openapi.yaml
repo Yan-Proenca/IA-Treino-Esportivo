@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: API de Cronograma e Rotina de Treinos
+  description: API para geração automatizada de cronogramas de treino personalizados (musculação, esportes e lutas) utilizando inteligência artificial estruturada.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+    description: Servidor de Desenvolvimento Local
+paths:
+  /:
+    get:
+      summary: Verifica o status da API
+      description: Retorna o estado atual da API, mensagem de sucesso e a versão em execução.
+      responses:
+        '200':
+          description: API operando normalmente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: API de Cronograma e Rotina de Treinos funcionando!
+                  version:
+                    type: string
+                    example: "1.0"
+  /generate:
+    post:
+      summary: Gera um cronograma de treinos personalizado
+      description: Recebe o perfil físico, objetivos e modalidades do usuário e retorna um planejamento semanal estruturado gerado por IA.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - objetivos
+                - nivel_experiencia
+                - frequencia_semanal
+                - modalidades
+              properties:
+                objetivos:
+                  type: string
+                  description: O objetivo principal do usuário com os treinos.
+                  example: Ganho de massa muscular e ganho de explosão para o Jiu-Jitsu.
+                nivel_experiencia:
+                  type: string
+                  description: Nível atual de condicionamento e técnica do usuário.
+                  example: Intermediário
+                frequencia_semanal:
+                  type: string
+                  description: Quantidade de dias disponíveis para treinar na semana.
+                  example: 5 dias por semana
+                modalidades:
+                  type: array
+                  description: Lista de esportes, lutas ou atividades de interesse para integrar na rotina.
+                  items:
+                    type: string
+                  example: ["Musculação", "Jiu-Jitsu", "Corrida"]
+                limitacoes:
+                  type: string
+                  description: Restrições médicas, lesões ou dores que devem ser respeitadas na montagem do treino.
+                  example: Condromalácia patelar leve no joelho esquerdo. Evitar agachamentos pesados com alta amplitude.
+      responses:
+        '200':
+          description: Cronograma gerado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  dados_enviados:
+                    type: object
+                    properties:
+                      objetivos:
+                        type: string
+                        example: Ganho de massa muscular e ganho de explosão para o Jiu-Jitsu.
+                      nivel_experiencia:
+                        type: string
+                        example: Intermediário
+                      frequencia_semanal:
+                        type: string
+                        example: 5 dias por semana
+                      modalidades:
+                        type: array
+                        items:
+                          type: string
+                        example: ["Musculação", "Jiu-Jitsu", "Corrida"]
+                      limitacoes:
+                        type: string
+                        example: Condromalácia patelar leve no joelho esquerdo. Evitar agachamentos pesados com alta amplitude.
+                  cronograma_treino:
+                    type: object
+                    properties:
+                      objetivo_do_treino:
+                        type: string
+                        example: Hipertrofia e Condicionamento para Jiu-Jitsu com Proteção Articular
+                      frequencia_semanal:
+                        type: string
+                        example: 5 dias por semana
+                      duracao_estimada_sessao:
+                        type: string
+                        example: 60 a 80 minutos
+                      rotina_semanal:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            dia:
+                              type: string
+                              example: Segunda-feira
+                            foco_do_dia:
+                              type: string
+                              example: Musculação (Membros Superiores) + Técnico Jiu-Jitsu
+                            atividades:
+                              type: array
+                              items:
+                                type: string
+                              example: [
+                                "Supino Reto com Halteres - 4x10 (Foco em controle)",
+                                "Puxada Alta na Polia - 4x10",
+                                "Desenvolvimento de Ombros - 3x12",
+                                "Drills técnicos de passagem de guarda (Jiu-Jitsu) - 30 min"
+                              ]
+                            tempo_de_descanso_entre_series:
+                              type: string
+                              example: 60 a 90 segundos
+                      recomendacoes_gerais:
+                        type: array
+                        items:
+                          type: string
+                        example: [
+                          "Realizar aquecimento articular dinâmico focado em ombros e quadris antes de cada sessão.",
+                          "Garantir ingestão adequada de água antes e durante o treino de Jiu-Jitsu para evitar cãibras.",
+                          "Monitorar o joelho esquerdo; caso sinta desconforto, interromper imediatamente os exercícios de impacto."
+                        ]
+        '400':
+          description: Requisição inválida por ausência de campos obrigatórios ou formato incorreto.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: O campo 'objetivos' é obrigatório.
+        '500':
+          description: Erro interno no processamento ou na comunicação com o modelo Gemini.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Erro ao gerar o cronograma de treinos.
